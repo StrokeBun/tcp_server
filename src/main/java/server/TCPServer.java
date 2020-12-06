@@ -25,9 +25,9 @@ public class TCPServer {
         this.port = port;
     }
 
-    public void start() throws Exception {
+    public void start(Machine machine) throws Exception {
         final TCPServerHandler handler = new TCPServerHandler();
-        DatagramHandler messageHandler = DatagramHandlerFactory.getMessageHandler(Machine.SOURCE);
+        DatagramHandler messageHandler = DatagramHandlerFactory.getMessageHandler(machine);
         handler.setMessageHandler(messageHandler);
         EventLoopGroup group = new NioEventLoopGroup();
         try {
