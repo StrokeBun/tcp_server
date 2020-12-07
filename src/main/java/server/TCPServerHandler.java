@@ -13,26 +13,18 @@ import java.nio.charset.Charset;
 @ChannelHandler.Sharable
 public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
-    private DatagramHandler messageHandler;
+    private DatagramHandler datagramHandler;
     private Charset charset = GlobalConfig.CHARSET;
-
-    public void setMessageHandler(DatagramHandler messageHandler) {
-        this.messageHandler = messageHandler;
-    }
-
-    public void setCharset(Charset charset) {
-        this.charset = charset;
-    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf in = (ByteBuf) msg;
         String datagram = in.toString(charset);
         System.out.println(datagram);
-        if (messageHandler != null) {
-            messageHandler.handleMsg(ctx, datagram);
+        if (datagramHandler != null) {
+            datagramHandler.handleDatagram(ctx, datagram);
         } else {
-            throw new Exception("EchoServerHandler need a messageHandler");
+            throw new Exception("TCPServerHandler need a messageHandler");
         }
     }
 
@@ -45,6 +37,14 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    public void setMessageHandler(DatagramHandler datagramHandler) {
+        this.datagramHandler = datagramHandler;
+    }
+
+    public void setCharset(Charset charset) {
+        this.charset = charset;
     }
 
 }
