@@ -2,13 +2,21 @@ package handler;
 
 public enum Machine {
 
-    SOURCE("电源"),
-    DEFAULT("默认，无通信规则");
+    SOURCE("CRT"),
+    DEFAULT("");
 
-    private String desc;
+    private String header;
 
-    Machine(String desc) {
-        this.desc = desc;
+    Machine(String header) {
+        this.header = header;
     }
 
+    public static Machine match(String datagram) {
+        for (Machine machine: Machine.values()) {
+            if (datagram.indexOf(machine.header) == 0) {
+                return machine;
+            }
+        }
+        return DEFAULT;
+    }
 }

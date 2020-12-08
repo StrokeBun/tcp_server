@@ -45,6 +45,9 @@ public abstract class AbstractDatagramHandler implements DatagramHandler {
         for (String kv : keyValue) {
             if (!kv.isEmpty()) {
                 String[] str = kv.split("=");
+                if (str.length < 2) {
+                    continue;
+                }
                 String field = str[0];
                 String value = str[1];
                 field = "set" + field.substring(0, 1).toUpperCase() + field.substring(1);

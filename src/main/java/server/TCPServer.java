@@ -1,9 +1,6 @@
 package server;
 
 import config.GlobalConfig;
-import handler.Machine;
-import handler.DatagramHandler;
-import handler.DatagramHandlerFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -25,10 +22,8 @@ public class TCPServer {
         this.port = port;
     }
 
-    public void start(Machine machine) throws Exception {
+    public void start() throws Exception {
         final TCPServerHandler handler = new TCPServerHandler();
-        DatagramHandler messageHandler = DatagramHandlerFactory.getMessageHandler(machine);
-        handler.setMessageHandler(messageHandler);
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
