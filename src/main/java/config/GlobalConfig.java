@@ -15,14 +15,12 @@ public final class GlobalConfig {
      * Keys of config file
      */
     private static final String PORT_KEY = "port";
-    private static final String EXIT_KEY = "exit";
 
     /**
      * Default value.
      */
     private static final String CONFIG_FILENAME = "config.properties";
     private static final String DEFAULT_PORT = "9000";
-    private static final String DEFAULT_EXIT_MSG = "exit";
 
     /**
      * Load config file.
@@ -34,11 +32,9 @@ public final class GlobalConfig {
             System.err.println("config file error");
             e.printStackTrace();
         }
-        EXIT_MSG = config.getProperty(EXIT_KEY, DEFAULT_EXIT_MSG);
         PORT = Integer.valueOf(config.getProperty(PORT_KEY, DEFAULT_PORT));
     }
 
-    public static final String EXIT_MSG;
     public static final int PORT;
     public static final Charset CHARSET = CharsetUtil.UTF_8;
 

@@ -12,8 +12,8 @@ public class SourceDatagramHandler extends AbstractDatagramHandler {
         super();
     }
 
-    public SourceDatagramHandler(String exitMsg, Charset charset) {
-        super(exitMsg, charset);
+    public SourceDatagramHandler(Charset charset) {
+        super(charset);
     }
 
     @Override
@@ -22,14 +22,12 @@ public class SourceDatagramHandler extends AbstractDatagramHandler {
          *  TODO: 具体协议在此处实现，如果不需要返回数据则返回NO_RESPONSE
          *  return NO_RESPONSE;
          */
-        return ((User)datagram).toString();
+        User user = (User) datagram;
+        return user.toString();
     }
 
     @Override
     protected Class getRequestClass() {
-        /**
-         * TODO: 定义解析后存储的request类型
-         */
         return User.class;
     }
 }

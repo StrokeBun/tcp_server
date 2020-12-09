@@ -1,26 +1,19 @@
 package server;
 
 import config.GlobalConfig;
-import handler.*;
+import handler.DatagramHandler;
+import handler.Machine;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @ChannelHandler.Sharable
 public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
-    private Map<Machine, DatagramHandler> handlers = new HashMap<Machine, DatagramHandler>() {
-        {
-            put(Machine.SOURCE, new SourceDatagramHandler());
-            put(Machine.DEFAULT, new DefaultDatagramHandler());
-        }
-    };
     private Charset charset = GlobalConfig.CHARSET;
 
     @Override
@@ -28,12 +21,12 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf in = (ByteBuf) msg;
         String datagram = in.toString(charset);
         Machine machine = Machine.match(datagram);
-        DatagramHandler handler = handlers.get(machine);
-        System.out.println(handler.toString());
+        DatagramHandler handler = machine.getDatagramHandler();
         if (handler != null) {
+            System.out.println(datagram);
             handler.handleDatagram(ctx, datagram);
         } else {
-            throw new Exception("TCPServerHandler need a messageHandler");
+            throw new Exception("TCPServerHandler need a DatagramHandler");
         }
     }
 

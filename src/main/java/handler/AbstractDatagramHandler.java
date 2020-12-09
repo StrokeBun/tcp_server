@@ -10,26 +10,28 @@ import java.nio.charset.Charset;
 public abstract class AbstractDatagramHandler implements DatagramHandler {
 
     /**
-     * the message stands for exiting.
+     * Default config of datagram
      */
-    protected String exitMsg;
+    private static final String DEFAULT_EXIT_MESSAGE = "exit";
+    private static final String DEFAULT_DATAGRAM_REGEX = ";";
+    private static final String DEFAULT_KEY_VALUE_REGEX = "=";
+
     /**
      * charset of encoder.
      */
     protected Charset charset;
 
     public AbstractDatagramHandler() {
-        this(GlobalConfig.EXIT_MSG, GlobalConfig.CHARSET);
+        this(GlobalConfig.CHARSET);
     }
 
-    public AbstractDatagramHandler(String exitMsg, Charset charset) {
-        this.exitMsg = exitMsg;
+    public AbstractDatagramHandler(Charset charset) {
         this.charset = charset;
     }
 
     @Override
     public void handleDatagram(ChannelHandlerContext ctx, String datagram) throws Exception {
-        if (datagram.equals(exitMsg)) {
+        if (datagram.equals(getExitMessage())) {
             ctx.disconnect();
         } else {
             Object request = analyzeDatagram(datagram);
@@ -41,10 +43,10 @@ public abstract class AbstractDatagramHandler implements DatagramHandler {
     protected Object analyzeDatagram(String datagram) throws Exception {
         Class clazz = getRequestClass();
         Object obj = clazz.newInstance();
-        String[] keyValue = datagram.split(";");
+        String[] keyValue = datagram.split(getDatagramRegex());
         for (String kv : keyValue) {
             if (!kv.isEmpty()) {
-                String[] str = kv.split("=");
+                String[] str = kv.split(getKeyValueRegex());
                 if (str.length < 2) {
                     continue;
                 }
@@ -70,4 +72,30 @@ public abstract class AbstractDatagramHandler implements DatagramHandler {
      * @return 请求的Class对象
      */
     protected abstract Class getRequestClass();
+
+
+    /**
+     * 断开连接的数据帧字符串，子类可进行重写
+     * @return 断开连接的数据帧字符串
+     */
+    protected String getExitMessage() {
+        return DEFAULT_EXIT_MESSAGE;
+    }
+
+    /**
+     * 数据帧数据之间的分割符，子类可进行重写
+     * @return 数据帧数据之间的分割符
+     */
+    protected String getDatagramRegex() {
+        return DEFAULT_DATAGRAM_REGEX;
+    }
+
+    /**
+     * 数据帧数据key-value的分割符，子类可进行重写
+     * @return 数据帧数据key-value的分割符
+     */
+    protected String getKeyValueRegex() {
+        return DEFAULT_KEY_VALUE_REGEX;
+    }
+
 }
