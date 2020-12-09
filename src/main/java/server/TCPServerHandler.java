@@ -44,5 +44,4 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     public void setCharset(Charset charset) {
         this.charset = charset;
     }
-
 }

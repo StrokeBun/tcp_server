@@ -5,13 +5,15 @@ public enum Machine {
     /**
      * Enum implements singleton pattern.
      */
-    SOURCE("CRT", new SourceDatagramHandler()),
-    DEFAULT("", new DefaultDatagramHandler());
+    SOURCE("电源","CRT", new SourceDatagramHandler()),
+    DEFAULT("默认无协议","", new DefaultDatagramHandler());
 
+    private String name;
     private String header;
     private DatagramHandler datagramHandler;
 
-    Machine(String header, DatagramHandler datagramHandler) {
+    Machine(String name, String header, DatagramHandler datagramHandler) {
+        this.name = name;
         this.header = header;
         this.datagramHandler = datagramHandler;
     }

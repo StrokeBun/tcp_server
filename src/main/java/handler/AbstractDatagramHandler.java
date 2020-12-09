@@ -9,12 +9,14 @@ import java.nio.charset.Charset;
 
 public abstract class AbstractDatagramHandler implements DatagramHandler {
 
+    protected static final String NO_RESPONSE = "";
     /**
      * Default config of datagram
      */
     private static final String DEFAULT_EXIT_MESSAGE = "exit";
     private static final String DEFAULT_DATAGRAM_REGEX = ";";
     private static final String DEFAULT_KEY_VALUE_REGEX = "=";
+
 
     /**
      * charset of encoder.

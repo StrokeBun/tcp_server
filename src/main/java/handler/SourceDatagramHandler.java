@@ -6,8 +6,6 @@ import java.nio.charset.Charset;
 
 public class SourceDatagramHandler extends AbstractDatagramHandler {
 
-    private static final String NO_RESPONSE = "";
-
     public SourceDatagramHandler() {
         super();
     }
@@ -29,5 +27,10 @@ public class SourceDatagramHandler extends AbstractDatagramHandler {
     @Override
     protected Class getRequestClass() {
         return User.class;
+    }
+
+    @Override
+    protected String getKeyValueRegex() {
+        return ":";
     }
 }
